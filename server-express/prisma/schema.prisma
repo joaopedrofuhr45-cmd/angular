@@ -25,3 +25,28 @@ model Usuario {
   senha     String
   criadoEm DateTime @default(now())
 }
+
+model Banner {
+  id             Int      @id @default(autoincrement())
+  titulo         String
+  descricao      String
+  imagem         String
+  linkDestino    String
+  ativo          Boolean  @default(true)
+  tipo           String   // "hero" ou "carousel"
+  criadoEm       DateTime @default(now())
+  atualizadoEm   DateTime @updatedAt
+}
+
+model Hotel {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  descricao      String
+  preco          Float
+  estrelas       Int
+  imagem         String
+  localizacao    String
+  destaque       Boolean  @default(false)
+  criadoEm       DateTime @default(now())
+  atualizadoEm   DateTime @updatedAt
+}
