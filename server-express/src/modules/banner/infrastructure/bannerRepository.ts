@@ -1,7 +1,7 @@
 import { IBannerRepository } from "../domain/IBannerRepository";
 import { BannerEntity } from "../domain/bannerEntity";
 import { BannerCreateDTO } from "../domain/bannerDTO";
-import { prismaClient } from "../../../shared/prisma/client";
+import  prismaClient  from "../../../shared/prisma/client";
 
 export class BannerRepository implements IBannerRepository {
   async criar(dados: BannerCreateDTO): Promise<BannerEntity> {

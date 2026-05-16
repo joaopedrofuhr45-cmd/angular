@@ -1,18 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { CadastrarUsuarioUseCase } from "../../application/cadastrarUsuarioUseCase";
 import { UsuarioEntity } from "../../domain/usuarioEntity";
-import { IUsuarioRepository } from "../../domain/IuUsuarioRepository";
+import { IuRepository } from "../../domain/IuUsuarioRepository";
 import { ConflictError } from "../../../../shared/errors/conflictError";
 
 describe("CadastrarUsuarioUseCase", () => {
   let useCase: CadastrarUsuarioUseCase;
-  let mockRepository: IUsuarioRepository;
+  let mockRepository: IuRepository;
 
   beforeEach(() => {
     mockRepository = {
-      criar: vi.fn(),
-      buscarPorEmail: vi.fn(),
-      buscarPorId: vi.fn(),
+      cadastrar: vi.fn(),
+      findByEmail: vi.fn(),
+      findById: vi.fn(),
     };
 
     useCase = new CadastrarUsuarioUseCase(mockRepository);
@@ -28,17 +28,17 @@ describe("CadastrarUsuarioUseCase", () => {
       data
     );
 
-    vi.mocked(mockRepository.buscarPorEmail).mockResolvedValueOnce(null);
-    vi.mocked(mockRepository.criar).mockResolvedValueOnce(usuarioEntity);
+    vi.mocked(mockRepository.findByEmail).mockResolvedValueOnce(null);
+    vi.mocked(mockRepository.cadastrar).mockResolvedValueOnce(usuarioEntity);
 
-    const result = await useCase.execute({
+    const result = await useCase.cadastrar({
       nome: "João Silva",
       email: "joao@example.com",
       senha: "senha123",
     });
 
-    expect(result.nome).toBe("João Silva");
-    expect(result.email).toBe("joao@example.com");
+    expect(result?.getNome()).toBe("João Silva");
+    expect(result?.getEmail()).toBe("joao@example.com");
   });
 
   it("deve lançar erro se email já está cadastrado", async () => {
@@ -51,12 +51,12 @@ describe("CadastrarUsuarioUseCase", () => {
       data
     );
 
-    vi.mocked(mockRepository.buscarPorEmail).mockResolvedValueOnce(
+    vi.mocked(mockRepository.findByEmail).mockResolvedValueOnce(
       usuarioExistente
     );
 
     await expect(
-      useCase.execute({
+      useCase.cadastrar({
         nome: "Outro Usuario",
         email: "joao@example.com",
         senha: "outraSenha123",

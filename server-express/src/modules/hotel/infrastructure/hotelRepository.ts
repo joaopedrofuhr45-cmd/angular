@@ -1,7 +1,8 @@
 import { IHotelRepository } from "../domain/IHotelRepository";
 import { HotelEntity } from "../domain/hotelEntity";
 import { HotelCreateDTO } from "../domain/hotelDTO";
-import { prismaClient } from "../../../shared/prisma/client";
+import prismaClient from "../../../shared/prisma/client";
+import { Hotel } from "@prisma/client";
 
 export class HotelRepository implements IHotelRepository {
   async criar(dados: HotelCreateDTO): Promise<HotelEntity> {
@@ -30,7 +31,7 @@ export class HotelRepository implements IHotelRepository {
     const hoteis = await prismaClient.hotel.findMany();
 
     return hoteis.map(
-      (hotel) =>
+      (hotel: Hotel) =>
         new HotelEntity(
           hotel.id,
           hotel.nome,
@@ -52,7 +53,7 @@ export class HotelRepository implements IHotelRepository {
     });
 
     return hoteis.map(
-      (hotel) =>
+      (hotel: Hotel) =>
         new HotelEntity(
           hotel.id,
           hotel.nome,
